@@ -207,15 +207,17 @@ TestRunner::runPyTestCase( const std::shared_ptr<xrt_core::device>& _dev, const 
 xrt::kernel
 TestRunner::get_kernel(const xrt::hw_context& hwctx, const std::string& kernel_or_elf)
 {
-  if (kernel_or_elf.find(".elf") == std::string::npos) {
+  size_t ext = kernel_or_elf.find(".elf");
+  if (ext == std::string::npos) {
     return xrt::kernel(hwctx, kernel_or_elf);
   }
   else {
     xrt::elf elf;
     elf = xrt::elf(kernel_or_elf);
     xrt::module mod{elf};
+    size_t filepath = kernel_or_elf.find_last_of("/");
 
-    return xrt::ext::kernel{hwctx, mod, "dpu:{nop}"};
+    return xrt::ext::kernel{hwctx, mod, "dpu:{" + kernel_or_elf.substr(filepath + 1,ext - filepath - 1) + "}"}; // assumes kernel has same name as .elf file
   }
 }
 

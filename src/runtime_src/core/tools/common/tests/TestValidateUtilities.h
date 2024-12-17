@@ -6,6 +6,7 @@
 
 // ------ I N C L U D E   F I L E S -------------------------------------------
 // Local - Include Files
+#include "core/common/query_requests.h"
 #include "xrt/xrt_device.h"
 #include "xrt/xrt_bo.h"
 #include "xrt/xrt_kernel.h"
@@ -88,6 +89,7 @@ void program_xclbin(const std::shared_ptr<xrt_core::device>& device, const std::
 bool search_and_program_xclbin(const std::shared_ptr<xrt_core::device>& dev, boost::property_tree::ptree& ptTest);
 int validate_binary_file(const std::string& binaryfile);
 std::string dpu_or_elf(const std::shared_ptr<xrt_core::device>& dev, const xrt::xclbin& xclbin,
-              boost::property_tree::ptree& ptTest);
+              boost::property_tree::ptree& ptTest,
+              xrt_core::query::elf_name::type elf_type = xrt_core::query::elf_name::type::nop);
 } //End of namespace XBValidateUtils
 #endif

@@ -384,7 +384,7 @@ validate_binary_file(const std::string& binaryfile)
 */
 std::string
 dpu_or_elf(const std::shared_ptr<xrt_core::device>& dev, const xrt::xclbin& xclbin,
-              boost::property_tree::ptree& ptTest)
+              boost::property_tree::ptree& ptTest, xrt_core::query::elf_name::type elf_type)
 {
   if (xrt_core::device_query<xrt_core::query::pcie_id>(dev).device_id != 5696) { // device ID for npu3 in decimal
   // Determine The DPU Kernel Name
@@ -408,8 +408,8 @@ dpu_or_elf(const std::shared_ptr<xrt_core::device>& dev, const xrt::xclbin& xclb
   }
   else {
   // Elf flow
-    const auto elf_name = xrt_core::device_query<xrt_core::query::elf_name>(dev, xrt_core::query::elf_name::type::nop);
-    auto elf_path = XBValidateUtils::findPlatformFile(elf_name, ptTest);
+    const auto elf_name = xrt_core::device_query<xrt_core::query::elf_name>(dev, elf_type);
+    auto elf_path = findPlatformFile(elf_name, ptTest);
 
     return elf_path;
   }
